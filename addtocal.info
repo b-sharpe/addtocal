@@ -2,8 +2,6 @@ name = Add to Cal
 description = A field formatter providing a widget for exporting events to various formats.
 core = 7.x
 
-dependencies[] = date
-
 files[] = addtocal.css
 files[] = addtocal.js
 
