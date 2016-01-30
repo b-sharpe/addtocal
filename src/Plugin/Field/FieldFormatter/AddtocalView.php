@@ -38,7 +38,7 @@ class AddtocalView extends FormatterBase {
     $settings = $display['settings'];
 
     //$field_list = field_info_instances($instance['entity_type'], $bundle_name);
-    $field_list = \Drupal::entityTypeManager()->getDefinitions('node', 'article');
+
 
     $description_options = $location_options = array('-1' => 'None');
 
@@ -67,6 +67,12 @@ class AddtocalView extends FormatterBase {
       "'" => t('Apostrophe'),
     );
 
+    $start_end_options = array(
+      'Both Start and End dates',
+      'start date only',
+      'End date only'
+    );
+
     $elements['thousand_separator'] = array(
       '#type' => 'select',
       '#title' => t('Thousand marker'),
@@ -80,6 +86,14 @@ class AddtocalView extends FormatterBase {
       '#type' => 'checkbox',
       '#default_value' => $this->getSetting('prefix_suffix'),
       '#weight' => 2,
+    );
+
+    $elements['display_start_end'] = array(
+      '#type' => 'select',
+      '#title' => t('Display'),
+      '#options' => $start_end_options,
+      '#default_value' => $this->getSetting('display_start_end'),
+      '#weight' => 0,
     );
 
     return $elements;
