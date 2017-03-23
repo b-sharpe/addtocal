@@ -1,26 +1,40 @@
-(function($) {
-  Drupal.behaviors.addtocal = {
-    attach: function(context) {
-      // Handle toggle event to position the menu properly
-      jQuery('.addtocal').toggle(function(e) {
-        var offset = jQuery(this).position();
-        var button_id = jQuery(this).attr('id');
-        var $menu = jQuery('#' + button_id + '_menu');
-        
-        $menu.show();
+/**
+ * @file addtocal.js
+ */
+(function ($) {
+  // Don't need to re-attach this function, so we do it here instead
+  // of in Drupal.behaviors.
+  $(document).ready(function () {
+    // When clicking anywhere in the window, hide menu.
+    $(window).click(function () {
+      if ($(window).data('addtocalVisible')) {
+        $('.addtocal-menu').hide();
+        $(window).data('addtocalVisible', false);
+      }
+    });
+  });
 
-        $menu.css({
-          'top': offset.top + 20,
-          'left': offset.left
-        });
-        
-        //Clicking outside the menu will hide it
-        jQuery(document).bind('click', function() {
-          $menu.hide();
-        });
-      }, function() {
-        $menu.hide();
-      });
-    }
-  } 
+  $('.addtocal').on('click',function (e) {
+    var $button = $(this);
+    var button_id = $button.attr('id');
+    var $menu = $('#' + button_id + '-menu');
+
+    e.stopPropagation();
+    e.preventDefault();
+
+    // Set position always on click to get the most accurate result.
+    var offset = $button.position();
+    $menu.css({
+      'top': offset.top + $button.outerHeight(),
+      'left': offset.left
+    });
+    $menu.toggle(0, function () {
+      if ($(this).is(":visible")) {
+        $(window).data('addtocalVisible', true);
+      }
+      else {
+        $(window).data('addtocalVisible', false);
+      }
+    });
+  });
 })(jQuery);
